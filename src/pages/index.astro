@@ -1,5 +1,8 @@
 ---
+import integrations from "../data/integrations.json";
+
 const title = "Micro-SaaS Integration Directory";
+const items = Array.isArray(integrations) ? integrations : [];
 ---
 
 <html lang="en">
@@ -7,9 +10,97 @@ const title = "Micro-SaaS Integration Directory";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        max-width: 920px;
+        margin: 3rem auto;
+        padding: 0 1.25rem;
+        background: #f8fafc;
+        color: #0f172a;
+        line-height: 1.6;
+      }
+      header {
+        margin-bottom: 2.5rem;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 1.25rem;
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+      }
+      .grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      }
+      .meta {
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.85rem;
+        color: #475569;
+        margin-bottom: 0.5rem;
+      }
+      .badge {
+        background: #eef2ff;
+        color: #3730a3;
+        padding: 0.15rem 0.6rem;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      h2 {
+        margin: 0.25rem 0 0.5rem;
+        font-size: 1.25rem;
+      }
+      ul {
+        margin: 0.5rem 0 0.75rem;
+        padding-left: 1.25rem;
+        color: #334155;
+      }
+      .monetization {
+        font-size: 0.9rem;
+        color: #065f46;
+        background: #ecfdf5;
+        padding: 0.6rem 0.85rem;
+        border-radius: 8px;
+      }
+    </style>
   </head>
-  <body style="font-family: system-ui, sans-serif; max-width: 800px; margin: 4rem auto; padding: 0 1.5rem; line-height: 1.6;">
-    <h1>{title}</h1>
-    <p>Automated directory deployed with Astro and Vercel.</p>
+  <body>
+    <header>
+      <h1>{title}</h1>
+      <p>Automated directory of actionable Micro-SaaS integrations ({items.length} listed).</p>
+    </header>
+
+    <main class="grid">
+      {items.map((item) => (
+        <article class="card">
+          <div class="meta">
+            <span class="badge">{item.category}</span>
+            {item.created_at && <span>{item.created_at}</span>}
+          </div>
+          <h2>{item.name}</h2>
+          <p>{item.summary}</p>
+          {Array.isArray(item.setup_steps) && item.setup_steps.length > 0 && (
+            <ul>
+              {item.setup_steps.map((step) => (
+                <li>{step}</li>
+              ))}
+            </ul>
+          )}
+          {item.monetization_angle && (
+            <div class="monetization">
+              <strong>Monetization Angle:</strong> {item.monetization_angle}
+            </div>
+          )}
+        </article>
+      ))}
+    </main>
   </body>
 </html>
