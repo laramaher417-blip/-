@@ -12,122 +12,198 @@ const categories = ["All", ...new Set(items.map((item) => item?.category).filter
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <style>
+      :root {
+        --bg: #fbfaf7;
+        --surface: #ffffff;
+        --ink: #18181b;
+        --muted: #52525b;
+        --border: #e7e5e4;
+        --accent: #1e3a34;
+        --accent-soft: #eef4f2;
+        --profit-bg: #f5f3ff;
+        --profit-ink: #3b2f63;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: system-ui, -apple-system, sans-serif;
-        max-width: 960px;
-        margin: 3rem auto;
-        padding: 0 1.25rem;
-        background: #f8fafc;
-        color: #0f172a;
-        line-height: 1.6;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 920px;
+        margin: 3.5rem auto;
+        padding: 0 1.25rem 4rem;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.65;
       }
+
       header {
-        margin-bottom: 1.75rem;
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 1.25rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
       }
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+
       h1 {
-        margin: 0 0 0.4rem;
-        font-size: 2rem;
+        margin: 0 0 0.5rem;
+        font-size: 2.15rem;
+        font-weight: 750;
+        letter-spacing: -0.02em;
       }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1rem;
+      }
+
       .controls {
         display: flex;
         flex-wrap: wrap;
         gap: 0.75rem;
         align-items: center;
-        margin-bottom: 1.75rem;
+        margin-bottom: 2rem;
       }
+
       .search-input {
         flex: 1 1 260px;
-        padding: 0.6rem 0.9rem;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
+        padding: 0.7rem 1rem;
+        border: 1px solid #d6d3d1;
+        border-radius: 10px;
         font-size: 0.95rem;
-        background: #ffffff;
-        color: #0f172a;
+        background: var(--surface);
+        color: var(--ink);
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
+
+      .search-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(30, 58, 52, 0.1);
+      }
+
       .filters {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
       }
+
       .filter-btn {
-        padding: 0.45rem 0.85rem;
-        border: 1px solid #cbd5e1;
+        padding: 0.5rem 0.95rem;
+        border: 1px solid #d6d3d1;
         border-radius: 999px;
-        background: #ffffff;
-        color: #334155;
+        background: var(--surface);
+        color: var(--muted);
         font-size: 0.85rem;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.15s ease;
       }
+
       .filter-btn:hover {
-        border-color: #6366f1;
-        color: #3730a3;
+        border-color: var(--accent);
+        color: var(--accent);
       }
+
       .filter-btn.active {
-        background: #3730a3;
-        border-color: #3730a3;
+        background: var(--accent);
+        border-color: var(--accent);
         color: #ffffff;
       }
+
       .grid {
         display: grid;
-        gap: 1.25rem;
+        gap: 1.35rem;
       }
+
       .card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1.25rem 1.5rem;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.5rem 1.65rem;
+        box-shadow: 0 4px 16px rgba(24, 24, 27, 0.03);
+        transition: transform 0.15s ease, border-color 0.15s ease;
       }
+
+      .card:hover {
+        border-color: #d6d3d1;
+        transform: translateY(-1px);
+      }
+
       .meta {
         display: flex;
         gap: 0.75rem;
         align-items: center;
-        font-size: 0.85rem;
-        color: #475569;
-        margin-bottom: 0.5rem;
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 0.6rem;
       }
+
       .badge {
-        background: #eef2ff;
-        color: #3730a3;
-        padding: 0.15rem 0.65rem;
+        background: var(--accent-soft);
+        color: var(--accent);
+        padding: 0.2rem 0.7rem;
         border-radius: 999px;
-        font-weight: 600;
+        font-weight: 700;
       }
+
       h2 {
-        margin: 0.25rem 0 0.5rem;
-        font-size: 1.25rem;
+        margin: 0.25rem 0 0.55rem;
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
       }
+
+      .summary {
+        margin: 0 0 0.9rem;
+        color: #3f3f46;
+      }
+
       ul {
-        margin: 0.5rem 0 0.85rem;
+        margin: 0.5rem 0 1rem;
         padding-left: 1.35rem;
-        color: #334155;
+        color: var(--muted);
       }
+
+      li {
+        margin-bottom: 0.3rem;
+      }
+
       .monetization {
         font-size: 0.9rem;
-        color: #065f46;
-        background: #ecfdf5;
-        padding: 0.65rem 0.9rem;
-        border-radius: 8px;
+        color: var(--profit-ink);
+        background: var(--profit-bg);
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        border-left: 3px solid #6d28d9;
       }
+
       .empty-state {
         text-align: center;
-        padding: 2rem;
-        background: #ffffff;
-        border: 1px dashed #cbd5e1;
-        border-radius: 12px;
-        color: #64748b;
+        padding: 2.25rem;
+        background: var(--surface);
+        border: 1px dashed #d6d3d1;
+        border-radius: 14px;
+        color: var(--muted);
       }
     </style>
   </head>
   <body>
     <header>
+      <span class="eyebrow">Curated Playbooks</span>
       <h1>{title}</h1>
-      <p>
-        Automated directory of actionable Micro-SaaS integrations (
+      <p class="subtitle">
+        Practical workflows and integration blueprints for lean software products (
         <span id="visible-count">{items.length}</span> of {items.length} shown).
       </p>
     </header>
@@ -137,7 +213,7 @@ const categories = ["All", ...new Set(items.map((item) => item?.category).filter
         id="search-input"
         class="search-input"
         type="search"
-        placeholder="Search integrations by name, summary, or monetization..."
+        placeholder="Search by workflow, tool, or business opportunity..."
         autocomplete="off"
       />
       <div class="filters" id="category-filters">
@@ -162,10 +238,10 @@ const categories = ["All", ...new Set(items.map((item) => item?.category).filter
         >
           <div class="meta">
             <span class="badge">{item.category}</span>
-            {item.created_at && <span>{item.created_at}</span>}
+            {item.created_at && <span>Updated {item.created_at}</span>}
           </div>
           <h2>{item.name}</h2>
-          <p>{item.summary}</p>
+          <p class="summary">{item.summary}</p>
           {Array.isArray(item.setup_steps) && item.setup_steps.length > 0 && (
             <ul>
               {item.setup_steps.map((step) => (
