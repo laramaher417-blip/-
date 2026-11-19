@@ -3,9 +3,10 @@ import integrations from "../data/integrations.json";
 
 const title = "Micro-SaaS Integration Directory";
 const items = Array.isArray(integrations) ? integrations : [];
+const categories = ["All", ...new Set(items.map((item) => item?.category).filter(Boolean))];
 ---
 
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,7 +14,7 @@ const items = Array.isArray(integrations) ? integrations : [];
     <style>
       body {
         font-family: system-ui, -apple-system, sans-serif;
-        max-width: 920px;
+        max-width: 960px;
         margin: 3rem auto;
         padding: 0 1.25rem;
         background: #f8fafc;
@@ -21,13 +22,54 @@ const items = Array.isArray(integrations) ? integrations : [];
         line-height: 1.6;
       }
       header {
-        margin-bottom: 2.5rem;
+        margin-bottom: 1.75rem;
         border-bottom: 1px solid #e2e8f0;
         padding-bottom: 1.25rem;
       }
       h1 {
-        margin: 0 0 0.5rem;
+        margin: 0 0 0.4rem;
         font-size: 2rem;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+        margin-bottom: 1.75rem;
+      }
+      .search-input {
+        flex: 1 1 260px;
+        padding: 0.6rem 0.9rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        background: #ffffff;
+        color: #0f172a;
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .filter-btn {
+        padding: 0.45rem 0.85rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        background: #ffffff;
+        color: #334155;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .filter-btn:hover {
+        border-color: #6366f1;
+        color: #3730a3;
+      }
+      .filter-btn.active {
+        background: #3730a3;
+        border-color: #3730a3;
+        color: #ffffff;
       }
       .grid {
         display: grid;
@@ -43,6 +85,7 @@ const items = Array.isArray(integrations) ? integrations : [];
       .meta {
         display: flex;
         gap: 0.75rem;
+        align-items: center;
         font-size: 0.85rem;
         color: #475569;
         margin-bottom: 0.5rem;
@@ -50,7 +93,7 @@ const items = Array.isArray(integrations) ? integrations : [];
       .badge {
         background: #eef2ff;
         color: #3730a3;
-        padding: 0.15rem 0.6rem;
+        padding: 0.15rem 0.65rem;
         border-radius: 999px;
         font-weight: 600;
       }
@@ -59,28 +102,64 @@ const items = Array.isArray(integrations) ? integrations : [];
         font-size: 1.25rem;
       }
       ul {
-        margin: 0.5rem 0 0.75rem;
-        padding-left: 1.25rem;
+        margin: 0.5rem 0 0.85rem;
+        padding-left: 1.35rem;
         color: #334155;
       }
       .monetization {
         font-size: 0.9rem;
         color: #065f46;
         background: #ecfdf5;
-        padding: 0.6rem 0.85rem;
+        padding: 0.65rem 0.9rem;
         border-radius: 8px;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 2rem;
+        background: #ffffff;
+        border: 1px dashed #cbd5e1;
+        border-radius: 12px;
+        color: #64748b;
       }
     </style>
   </head>
   <body>
     <header>
       <h1>{title}</h1>
-      <p>Automated directory of actionable Micro-SaaS integrations ({items.length} listed).</p>
+      <p>
+        Automated directory of actionable Micro-SaaS integrations (
+        <span id="visible-count">{items.length}</span> of {items.length} shown).
+      </p>
     </header>
 
-    <main class="grid">
+    <section class="controls" aria-label="Search and filter integrations">
+      <input
+        id="search-input"
+        class="search-input"
+        type="search"
+        placeholder="Search integrations by name, summary, or monetization..."
+        autocomplete="off"
+      />
+      <div class="filters" id="category-filters">
+        {categories.map((cat, idx) => (
+          <button
+            type="button"
+            class={`filter-btn ${idx === 0 ? "active" : ""}`}
+            data-category={cat}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <main class="grid" id="cards-grid">
       {items.map((item) => (
-        <article class="card">
+        <article
+          class="card"
+          data-category={item.category || ""}
+          data-search={`${item.name || ""} ${item.category || ""} ${item.summary || ""} ${item.monetization_angle || ""} ${(item.setup_steps || []).join(" ")}`.toLowerCase()}
+        >
           <div class="meta">
             <span class="badge">{item.category}</span>
             {item.created_at && <span>{item.created_at}</span>}
@@ -102,5 +181,51 @@ const items = Array.isArray(integrations) ? integrations : [];
         </article>
       ))}
     </main>
+
+    <div id="empty-state" class="empty-state" style="display: none;">
+      No matching integrations found. Try clearing your search or selecting "All".
+    </div>
+
+    <script is:inline>
+      (() => {
+        const searchInput = document.getElementById("search-input");
+        const filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
+        const cards = Array.from(document.querySelectorAll("#cards-grid .card"));
+        const countEl = document.getElementById("visible-count");
+        const emptyEl = document.getElementById("empty-state");
+
+        let activeCategory = "All";
+
+        function applyFilters() {
+          const query = (searchInput?.value || "").trim().toLowerCase();
+          let visibleCount = 0;
+
+          cards.forEach((card) => {
+            const cardCat = card.getAttribute("data-category") || "";
+            const haystack = card.getAttribute("data-search") || "";
+            const matchesCategory = activeCategory === "All" || cardCat === activeCategory;
+            const matchesQuery = !query || haystack.includes(query);
+            const show = matchesCategory && matchesQuery;
+
+            card.style.display = show ? "" : "none";
+            if (show) visibleCount += 1;
+          });
+
+          if (countEl) countEl.textContent = String(visibleCount);
+          if (emptyEl) emptyEl.style.display = visibleCount === 0 ? "" : "none";
+        }
+
+        searchInput?.addEventListener("input", applyFilters);
+
+        filterButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            activeCategory = btn.getAttribute("data-category") || "All";
+            filterButtons.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            applyFilters();
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
