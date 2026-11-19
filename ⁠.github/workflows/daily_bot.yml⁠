@@ -1,5 +1,4 @@
 name: Daily Automation Bot
-
 on:
   schedule:
     - cron: '0 2 * * *'
