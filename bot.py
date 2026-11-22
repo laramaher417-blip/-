@@ -66,7 +66,7 @@ def generate_with_ai(existing_names: list[str]) -> list[dict]:
         return []
 
     api_url = (os.getenv("AI_API_URL") or "").strip() or "https://api.groq.com/openai/v1/chat/completions"
-    model = (os.getenv("AI_MODEL") or "").strip() or "llama-3.3-70b-versatile"
+    model = "llama-3.3-70b-versatile"
     print(f"DEBUG url={api_url!r} model={model!r}")
 
     avoid_text = ", ".join(existing_names[-20:]) if existing_names else "None"
