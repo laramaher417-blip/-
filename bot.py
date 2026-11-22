@@ -66,7 +66,7 @@ def generate_with_ai(existing_names: list[str]) -> list[dict]:
 
     api_url = os.getenv("AI_API_URL", "https://api.groq.com/openai/v1/chat/completions").strip()
     model = os.getenv("AI_MODEL", "llama-3.3-70b-versatile").strip()
-
+print(f"DEBUG url={api_url!r} model={model!r}")
     avoid_text = ", ".join(existing_names[-20:]) if existing_names else "None"
     prompt = (
         "Generate 2 practical Micro-SaaS integration ideas as a strict JSON array. "
