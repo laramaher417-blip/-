@@ -7,6 +7,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 DATA_FILE = Path("src/data/integrations.json")
+GROQ_CHAT_URL = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_MODELS_URL = "https://api.groq.com/openai/v1/models"
+PREFERRED_MODELS = [
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+]
 
 FALLBACK_INTEGRATIONS = [
     {
@@ -59,14 +65,72 @@ def extract_json_array(text: str) -> list[dict]:
     return data
 
 
+def get_candidate_models(api_key: str) -> list[str]:
+    models = list(PREFERRED_MODELS)
+    req = urllib.request.Request(
+        GROQ_MODELS_URL,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+            "User-Agent": "MicroSaaSDirectoryBot/1.0",
+        },
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        for item in data.get("data", []):
+            model_id = item.get("id") if isinstance(item, dict) else None
+            if isinstance(model_id, str) and model_id.strip() and model_id not in models:
+                models.append(model_id.strip())
+    except Exception:
+        pass
+    return models
+
+
+def try_model(api_key: str, model: str, prompt: str) -> list[dict] | None:
+    payload = {
+        "model": model,
+        "temperature": 0.7,
+        "messages": [
+            {"role": "system", "content": "You output strictly valid JSON arrays."},
+            {"role": "user", "content": prompt},
+        ],
+    }
+    req = urllib.request.Request(
+        GROQ_CHAT_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+            "User-Agent": "MicroSaaSDirectoryBot/1.0",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+        content = body["choices"][0]["message"]["content"]
+        items = extract_json_array(content)
+        return items if items else None
+    except urllib.error.HTTPError as e:
+        err_body = ""
+        try:
+            err_body = e.read().decode("utf-8", errors="replace")
+        except Exception:
+            pass
+        print(f"Model {model} failed ({e.code}): {err_body}")
+        return None
+    except Exception as e:
+        print(f"Model {model} error: {e}")
+        return None
+
+
 def generate_with_ai(existing_names: list[str]) -> list[dict]:
     api_key = os.getenv("AI_API_KEY", "").strip()
     if not api_key:
-        print("DEBUG: AI_API_KEY is missing or empty.")
+        print("AI_API_KEY is missing or empty.")
         return []
-
-    api_url = "https://api.groq.com/openai/v1/chat/completions"
-    model = "llama-3.3-70b-versatile"
 
     avoid_text = ", ".join(existing_names[-20:]) if existing_names else "None"
     prompt = (
@@ -78,42 +142,13 @@ def generate_with_ai(existing_names: list[str]) -> list[dict]:
         "Return ONLY valid JSON without extra text."
     )
 
-    payload = {
-        "model": model,
-        "temperature": 0.7,
-        "messages": [
-            {"role": "system", "content": "You output strictly valid JSON arrays."},
-            {"role": "user", "content": prompt},
-        ],
-    }
+    for model in get_candidate_models(api_key):
+        items = try_model(api_key, model, prompt)
+        if items:
+            print(f"Generated ideas using model: {model}")
+            return items
 
-    req = urllib.request.Request(
-        api_url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "MicroSaaSDirectoryBot/1.0",
-        },
-        method="POST",
-    )
-
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            body = json.loads(resp.read().decode("utf-8"))
-        content = body["choices"][0]["message"]["content"]
-        return extract_json_array(content)
-    except urllib.error.HTTPError as e:
-        err_body = ""
-        try:
-            err_body = e.read().decode("utf-8", errors="replace")
-        except Exception:
-            pass
-        print(f"AI generation fallback triggered: HTTP Error {e.code}: {e.reason} | {err_body}")
-        return []
-    except Exception as e:
-        print(f"AI generation fallback triggered: {e}")
-        return []
+    return []
 
 
 def normalize_item(item: dict) -> dict | None:
