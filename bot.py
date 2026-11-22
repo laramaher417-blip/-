@@ -10,6 +10,7 @@ DATA_FILE = Path("src/data/integrations.json")
 GROQ_CHAT_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODELS_URL = "https://api.groq.com/openai/v1/models"
 PREFERRED_MODELS = [
+    "qwen/qwen3-8-27b",
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
 ]
