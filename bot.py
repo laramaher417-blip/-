@@ -65,8 +65,8 @@ def generate_with_ai(existing_names: list[str]) -> list[dict]:
         print("DEBUG: AI_API_KEY is missing or empty.")
         return []
 
-    api_url = os.getenv("AI_API_URL", "https://api.groq.com/openai/v1/chat/completions").strip()
-    model = os.getenv("AI_MODEL", "llama-3.3-70b-versatile").strip()
+    api_url = (os.getenv("AI_API_URL") or "").strip() or "https://api.groq.com/openai/v1/chat/completions"
+    model = (os.getenv("AI_MODEL") or "").strip() or "llama-3.3-70b-versatile"
     print(f"DEBUG url={api_url!r} model={model!r}")
 
     avoid_text = ", ".join(existing_names[-20:]) if existing_names else "None"
