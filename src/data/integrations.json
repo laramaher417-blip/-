@@ -24,5 +24,31 @@
     ],
     "monetization_angle": "Offer as a lightweight paid add-on for indie SaaS founders wanting zero-config alerts.",
     "created_at": "2026-11-19"
+  },
+  {
+    "slug": "hubspot-to-charticheckout-sync",
+    "name": "HubSpot Charticheckout Sync",
+    "category": "CRM Integration",
+    "summary": "Automates the creation of checkout links in Charticheckout for every new deal marked as 'Closed-Won' in HubSpot. This eliminates manual data entry and ensures immediate payment collection.",
+    "setup_steps": [
+      "Create a webhook trigger in HubSpot for the 'Deal Changed' event filtered by stage 'Closed-Won'.",
+      "Map the HubSpot deal amount and customer name to the Charticheckout API payload fields.",
+      "Deploy the middleware to send the POST request and log the generated checkout URL back to the HubSpot deal properties."
+    ],
+    "monetization_angle": "Charge a flat monthly fee per connected workspace, targeting small e-commerce teams who rely on both platforms for sales operations.",
+    "created_at": "2026-11-22T08:42:55.730273+00:00"
+  },
+  {
+    "slug": "calendly-to-airtable-meeting-notes",
+    "name": "Calendly Airtable Meeting Notes",
+    "category": "Productivity",
+    "summary": "Pushes metadata from completed Calendly events into pre-configured Airtable bases to automatically log customer interactions. This creates a searchable history of all sales calls without manual logging.",
+    "setup_steps": [
+      "Set up a Calendly webhook to listen for the 'invitee_confirmed' event type.",
+      "Use a serverless function to transform the event data into Airtable's record creation format.",
+      "Send the data to the specific Airtable table ID via the API key provided by the user."
+    ],
+    "monetization_angle": "Offer a freemium model where basic logging is free, but advanced features like automatic follow-up task creation in Airtable require a premium subscription.",
+    "created_at": "2026-11-22T08:42:55.730302+00:00"
   }
 ]
