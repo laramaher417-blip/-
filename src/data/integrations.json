@@ -50,5 +50,31 @@
     ],
     "monetization_angle": "Offer a freemium model where basic logging is free, but advanced features like automatic follow-up task creation in Airtable require a premium subscription.",
     "created_at": "2026-11-22T08:42:55.730302+00:00"
+  },
+  {
+    "slug": "github-pr-github-comments-to-trello",
+    "name": "GitHub PR Review Trello Sync",
+    "category": "DevOps Integration",
+    "summary": "Automatically creates Trello cards from GitHub Pull Request reviews to track code quality feedback and action items outside the codebase.",
+    "setup_steps": [
+      "Connect GitHub and Trello accounts via OAuth",
+      "Map PR review comments to specific Trello lists and labels",
+      "Enable webhook triggers for new reviews on selected repositories"
+    ],
+    "monetization_angle": "Charge a monthly subscription for teams exceeding a certain number of repositories or board updates.",
+    "created_at": "2026-11-22T08:52:03.800684+00:00"
+  },
+  {
+    "slug": "shopify-order-to-mailchimp-segment",
+    "name": "Shopify to Mailchimp Dynamic Segmentation",
+    "category": "E-commerce Marketing",
+    "summary": "Syncs real-time Shopify order data to create or update Mailchimp audience segments based on purchase history and customer lifetime value.",
+    "setup_steps": [
+      "Authorize Shopify and Mailchimp API access",
+      "Define segmentation rules based on order tags or totals",
+      "Activate the sync engine to push updates on new orders"
+    ],
+    "monetization_angle": "Offer tiered pricing based on the volume of monthly order events processed.",
+    "created_at": "2026-11-22T08:52:03.800716+00:00"
   }
 ]
