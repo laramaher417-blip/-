@@ -17,9 +17,9 @@ FALLBACK_INTEGRATIONS = [
         "setup_steps": [
             "Create a Slack incoming webhook URL for your billing channel.",
             "Subscribe to checkout.session.completed and invoice.payment_failed events in Stripe.",
-            "Post formatted event payloads to Slack with customer and plan details."
+            "Post formatted event payloads to Slack with customer and plan details.",
         ],
-        "monetization_angle": "Offer as a lightweight paid add-on for indie SaaS founders wanting zero-config alerts."
+        "monetization_angle": "Offer as a lightweight paid add-on for indie SaaS founders wanting zero-config alerts.",
     },
     {
         "slug": "notion-linear-bug-triage",
@@ -29,10 +29,10 @@ FALLBACK_INTEGRATIONS = [
         "setup_steps": [
             "Filter Notion database items marked as Bug and Ready for Triage.",
             "Map title, severity tag, and customer context to Linear issue fields.",
-            "Write the created Linear issue URL back to Notion to prevent duplicates."
+            "Write the created Linear issue URL back to Notion to prevent duplicates.",
         ],
-        "monetization_angle": "Target lean product teams that log feedback in Notion but track engineering sprints in Linear."
-    }
+        "monetization_angle": "Target lean product teams that log feedback in Notion but track engineering sprints in Linear.",
+    },
 ]
 
 
@@ -62,11 +62,13 @@ def extract_json_array(text: str) -> list[dict]:
 def generate_with_ai(existing_names: list[str]) -> list[dict]:
     api_key = os.getenv("AI_API_KEY", "").strip()
     if not api_key:
+        print("DEBUG: AI_API_KEY is missing or empty.")
         return []
 
     api_url = os.getenv("AI_API_URL", "https://api.groq.com/openai/v1/chat/completions").strip()
     model = os.getenv("AI_MODEL", "llama-3.3-70b-versatile").strip()
-print(f"DEBUG url={api_url!r} model={model!r}")
+    print(f"DEBUG url={api_url!r} model={model!r}")
+
     avoid_text = ", ".join(existing_names[-20:]) if existing_names else "None"
     prompt = (
         "Generate 2 practical Micro-SaaS integration ideas as a strict JSON array. "
@@ -97,69 +99,76 @@ print(f"DEBUG url={api_url!r} model={model!r}")
         method="POST",
     )
 
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        body = json.loads(resp.read().decode("utf-8"))
-
-    content = body["choices"][0]["message"]["content"]
-    return extract_json_array(content)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+        content = body["choices"][0]["message"]["content"]
+        return extract_json_array(content)
+    except urllib.error.HTTPError as e:
+        err_body = ""
+        try:
+            err_body = e.read().decode("utf-8", errors="replace")
+        except Exception:
+            pass
+        print(f"AI generation fallback triggered: HTTP Error {e.code}: {e.reason} | {err_body}")
+        return []
+    except Exception as e:
+        print(f"AI generation fallback triggered: {e}")
+        return []
 
 
 def normalize_item(item: dict) -> dict | None:
+    if not isinstance(item, dict):
+        return None
     name = str(item.get("name", "")).strip()
     if not name:
         return None
+
     slug_raw = str(item.get("slug") or name).lower()
     slug = re.sub(r"[^a-z0-9]+", "-", slug_raw).strip("-")
     if not slug:
         return None
 
     steps_raw = item.get("setup_steps", [])
+    if not isinstance(steps_raw, list):
+        steps_raw = []
     steps = [str(s).strip() for s in steps_raw if str(s).strip()][:5]
     if not steps:
-        steps = ["Connect source webhook.", "Transform payload.", "Deliver to target service."]
+        steps = [
+            "Connect source webhook.",
+            "Transform payload.",
+            "Deliver to target service.",
+        ]
 
     return {
         "slug": slug,
         "name": name,
-        "category": str(item.get("category", "Workflow Automation")).strip() or "Workflow Automation",
-        "summary": str(item.get("summary", "Automated Micro-SaaS integration.")).strip(),
+        "category": str(item.get("category", "Automation")).strip() or "Automation",
+        "summary": str(item.get("summary", "")).strip(),
         "setup_steps": steps,
-        "monetization_angle": str(item.get("monetization_angle", "Built for fast B2B workflow adoption.")).strip(),
-        "created_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "monetization_angle": str(item.get("monetization_angle", "")).strip(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
     }
 
 
 def main() -> None:
     existing = load_existing()
-    seen_slugs = {item.get("slug") for item in existing if item.get("slug")}
-    existing_names = [item.get("name", "") for item in existing if item.get("name")]
+    existing_slugs = {str(x.get("slug", "")).strip().lower() for x in existing if isinstance(x, dict)}
+    existing_names = [str(x.get("name", "")).strip() for x in existing if isinstance(x, dict) and x.get("name")]
 
-    candidates: list[dict] = []
-    try:
-        candidates.extend(generate_with_ai(existing_names))
-    except (urllib.error.URLError, TimeoutError, ValueError, KeyError, json.JSONDecodeError) as exc:
-        print(f"AI generation fallback triggered: {exc}")
-
-    if not candidates:
-        candidates.extend(FALLBACK_INTEGRATIONS)
+    generated = generate_with_ai(existing_names)
+    candidates = generated if generated else FALLBACK_INTEGRATIONS
 
     added = 0
     for raw_item in candidates:
-        if not isinstance(raw_item, dict):
-            continue
         norm = normalize_item(raw_item)
-        if not norm or norm["slug"] in seen_slugs:
+        if not norm:
             continue
-        existing.insert(0, norm)
-        seen_slugs.add(norm["slug"])
+        if norm["slug"] in existing_slugs:
+            continue
+        existing.append(norm)
+        existing_slugs.add(norm["slug"])
         added += 1
-
-    if added == 0 and not existing:
-        for fallback in FALLBACK_INTEGRATIONS:
-            norm = normalize_item(fallback)
-            if norm and norm["slug"] not in seen_slugs:
-                existing.append(norm)
-                seen_slugs.add(norm["slug"])
 
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     DATA_FILE.write_text(json.dumps(existing, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
