@@ -102,5 +102,31 @@
     ],
     "monetization_angle": "Subscription tiered by number of form responses per month, with a free trial.",
     "created_at": "2026-11-23T02:45:13.554259+00:00"
+  },
+  {
+    "slug": "google-calendar-notion-recap",
+    "name": "Google Calendar to Notion Meeting Recap",
+    "category": "Productivity",
+    "summary": "Automatically generate a Notion page for each scheduled Google Calendar event, including agenda, attendees, and a template for meeting minutes.",
+    "setup_steps": [
+      "Connect your Google Calendar and Notion accounts via OAuth.",
+      "Define which calendar events trigger a Notion page creation.",
+      "Choose a Notion template to populate with event details."
+    ],
+    "monetization_angle": "Charge a monthly fee for unlimited recaps and advanced template customization.",
+    "created_at": "2026-11-24T02:44:29.333670+00:00"
+  },
+  {
+    "slug": "trello-discord-board-updates",
+    "name": "Trello to Discord Board Updates",
+    "category": "Communication",
+    "summary": "Send real-time Discord notifications for Trello board activities such as card creation, due date changes, and status updates.",
+    "setup_steps": [
+      "Link your Trello and Discord accounts through a bot.",
+      "Select the Trello board and channels to monitor.",
+      "Configure event triggers and message formats."
+    ],
+    "monetization_angle": "Offer a tiered subscription based on the number of boards and notification frequency.",
+    "created_at": "2026-11-24T02:44:29.333699+00:00"
   }
 ]
