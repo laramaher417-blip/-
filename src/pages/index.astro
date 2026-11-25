@@ -44,6 +44,31 @@ const categories = ["All", ...new Set(items.map((item) => item?.category).filter
         border-bottom: 1px solid var(--border);
       }
 
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--accent);
+        text-decoration: none;
+        padding: 0.35rem 0.85rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        transition: all 0.15s ease;
+      }
+
+      .nav-link:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+      }
+
       .eyebrow {
         display: inline-block;
         font-size: 0.78rem;
@@ -51,7 +76,6 @@ const categories = ["All", ...new Set(items.map((item) => item?.category).filter
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--accent);
-        margin-bottom: 0.5rem;
       }
 
       h1 {
@@ -200,7 +224,10 @@ const categories = ["All", ...new Set(items.map((item) => item?.category).filter
   </head>
   <body>
     <header>
-      <span class="eyebrow">Curated Playbooks</span>
+      <div class="top-bar">
+        <span class="eyebrow">Curated Playbooks</span>
+        <a href="/contact" class="nav-link">Contact</a>
+      </div>
       <h1>{title}</h1>
       <p class="subtitle">
         Practical workflows and integration blueprints for lean software products (
