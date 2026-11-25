@@ -3,6 +3,7 @@
     "slug": "notion-linear-bug-triage",
     "name": "Notion to Linear Bug Triage",
     "category": "Product & Support",
+    "affiliate_url": "",
     "summary": "Turn tagged Notion customer feedback rows into prioritized Linear issues automatically.",
     "setup_steps": [
       "Filter Notion database items marked as Bug and Ready for Triage.",
@@ -16,6 +17,7 @@
     "slug": "stripe-slack-payment-alerts",
     "name": "Stripe to Slack Payment Alerts",
     "category": "Billing & Notifications",
+    "affiliate_url": "",
     "summary": "Send instant Slack alerts whenever a new subscription payment succeeds or fails.",
     "setup_steps": [
       "Create a Slack incoming webhook URL for your billing channel.",
@@ -29,6 +31,7 @@
     "slug": "hubspot-to-charticheckout-sync",
     "name": "HubSpot Charticheckout Sync",
     "category": "CRM Integration",
+    "affiliate_url": "",
     "summary": "Automates the creation of checkout links in Charticheckout for every new deal marked as 'Closed-Won' in HubSpot. This eliminates manual data entry and ensures immediate payment collection.",
     "setup_steps": [
       "Create a webhook trigger in HubSpot for the 'Deal Changed' event filtered by stage 'Closed-Won'.",
@@ -42,6 +45,7 @@
     "slug": "calendly-to-airtable-meeting-notes",
     "name": "Calendly Airtable Meeting Notes",
     "category": "Productivity",
+    "affiliate_url": "",
     "summary": "Pushes metadata from completed Calendly events into pre-configured Airtable bases to automatically log customer interactions. This creates a searchable history of all sales calls without manual logging.",
     "setup_steps": [
       "Set up a Calendly webhook to listen for the 'invitee_confirmed' event type.",
@@ -52,14 +56,15 @@
     "created_at": "2026-11-22T08:42:55.730302+00:00"
   },
   {
-    "slug": "github-pr-github-comments-to-trello",
+    "slug": "github-pr-comments-to-trello",
     "name": "GitHub PR Review Trello Sync",
     "category": "DevOps Integration",
+    "affiliate_url": "",
     "summary": "Automatically creates Trello cards from GitHub Pull Request reviews to track code quality feedback and action items outside the codebase.",
     "setup_steps": [
-      "Connect GitHub and Trello accounts via OAuth",
-      "Map PR review comments to specific Trello lists and labels",
-      "Enable webhook triggers for new reviews on selected repositories"
+      "Connect GitHub and Trello accounts via OAuth.",
+      "Map PR review comments to specific Trello lists and labels.",
+      "Enable webhook triggers for new reviews on selected repositories."
     ],
     "monetization_angle": "Charge a monthly subscription for teams exceeding a certain number of repositories or board updates.",
     "created_at": "2026-11-22T08:52:03.800684+00:00"
@@ -68,11 +73,12 @@
     "slug": "shopify-order-to-mailchimp-segment",
     "name": "Shopify to Mailchimp Dynamic Segmentation",
     "category": "E-commerce Marketing",
+    "affiliate_url": "",
     "summary": "Syncs real-time Shopify order data to create or update Mailchimp audience segments based on purchase history and customer lifetime value.",
     "setup_steps": [
-      "Authorize Shopify and Mailchimp API access",
-      "Define segmentation rules based on order tags or totals",
-      "Activate the sync engine to push updates on new orders"
+      "Authorize Shopify and Mailchimp API access.",
+      "Define segmentation rules based on order tags or totals.",
+      "Activate the sync engine to push updates on new orders."
     ],
     "monetization_angle": "Offer tiered pricing based on the volume of monthly order events processed.",
     "created_at": "2026-11-22T08:52:03.800716+00:00"
@@ -81,6 +87,7 @@
     "slug": "asana-intercom-feedback-sync",
     "name": "Asana to Intercom Feedback Sync",
     "category": "Customer Support",
+    "affiliate_url": "",
     "summary": "Automatically create Intercom tickets from new Asana tasks tagged as customer feedback, keeping support teams in sync with project management.",
     "setup_steps": [
       "Connect Asana and Intercom via OAuth.",
@@ -94,6 +101,7 @@
     "slug": "typeform-monday-lead-sync",
     "name": "Typeform to Monday.com Lead Sync",
     "category": "CRM",
+    "affiliate_url": "",
     "summary": "Push new Typeform responses into a dedicated Monday.com board, automatically creating lead items with custom fields for follow‑up.",
     "setup_steps": [
       "Authorize Typeform and Monday.com.",
@@ -107,6 +115,7 @@
     "slug": "google-calendar-notion-recap",
     "name": "Google Calendar to Notion Meeting Recap",
     "category": "Productivity",
+    "affiliate_url": "",
     "summary": "Automatically generate a Notion page for each scheduled Google Calendar event, including agenda, attendees, and a template for meeting minutes.",
     "setup_steps": [
       "Connect your Google Calendar and Notion accounts via OAuth.",
@@ -120,6 +129,7 @@
     "slug": "trello-discord-board-updates",
     "name": "Trello to Discord Board Updates",
     "category": "Communication",
+    "affiliate_url": "",
     "summary": "Send real-time Discord notifications for Trello board activities such as card creation, due date changes, and status updates.",
     "setup_steps": [
       "Link your Trello and Discord accounts through a bot.",
@@ -133,24 +143,26 @@
     "slug": "airtable-zoom-meeting-notes",
     "name": "Airtable + Zoom Meeting Notes",
     "category": "Task Management",
+    "affiliate_url": "",
     "summary": "Integrate Airtable and Zoom to automatically save meeting notes to Airtable, streamlining note-taking and organization.",
     "setup_steps": [
-      "1. Sign up for an Airtable and Zoom accounts.",
-      "2. Create a new Airtable base for meeting notes and define the necessary fields.",
-      "3. Set up a Zoom webhook to trigger Airtable updates after meetings."
+      "Sign up for an Airtable and Zoom account.",
+      "Create a new Airtable base for meeting notes and define the necessary fields.",
+      "Set up a Zoom webhook to trigger Airtable updates after meetings."
     ],
     "monetization_angle": "Businesses can save time and improve consistency by using Airtable as a central repository for meeting notes.",
     "created_at": "2026-11-25T02:45:24.214800+00:00"
   },
   {
-    "slug": "todoist-todoist-task-sync",
+    "slug": "todoist-task-sync-between-accounts",
     "name": "Todoist Task Sync Between Accounts",
     "category": "Task Management",
+    "affiliate_url": "",
     "summary": "Allow users to sync tasks between two Todoist accounts, enabling seamless task management across personal and work accounts.",
     "setup_steps": [
-      "1. Install the Todoist app on mobile devices.",
-      "2. Create two separate Todoist accounts (personal and work).",
-      "3. Enable the Task Sync add-on in each Todoist account."
+      "Install the Todoist app on mobile devices.",
+      "Create two separate Todoist accounts (personal and work).",
+      "Enable the Task Sync add-on in each Todoist account."
     ],
     "monetization_angle": "Businesses can utilize Todoist's Task Sync feature to streamline task management for remote teams.",
     "created_at": "2026-11-25T02:45:24.214831+00:00"
