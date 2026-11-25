@@ -128,5 +128,31 @@
     ],
     "monetization_angle": "Offer a tiered subscription based on the number of boards and notification frequency.",
     "created_at": "2026-11-24T02:44:29.333699+00:00"
+  },
+  {
+    "slug": "airtable-zoom-meeting-notes",
+    "name": "Airtable + Zoom Meeting Notes",
+    "category": "Task Management",
+    "summary": "Integrate Airtable and Zoom to automatically save meeting notes to Airtable, streamlining note-taking and organization.",
+    "setup_steps": [
+      "1. Sign up for an Airtable and Zoom accounts.",
+      "2. Create a new Airtable base for meeting notes and define the necessary fields.",
+      "3. Set up a Zoom webhook to trigger Airtable updates after meetings."
+    ],
+    "monetization_angle": "Businesses can save time and improve consistency by using Airtable as a central repository for meeting notes.",
+    "created_at": "2026-11-25T02:45:24.214800+00:00"
+  },
+  {
+    "slug": "todoist-todoist-task-sync",
+    "name": "Todoist Task Sync Between Accounts",
+    "category": "Task Management",
+    "summary": "Allow users to sync tasks between two Todoist accounts, enabling seamless task management across personal and work accounts.",
+    "setup_steps": [
+      "1. Install the Todoist app on mobile devices.",
+      "2. Create two separate Todoist accounts (personal and work).",
+      "3. Enable the Task Sync add-on in each Todoist account."
+    ],
+    "monetization_angle": "Businesses can utilize Todoist's Task Sync feature to streamline task management for remote teams.",
+    "created_at": "2026-11-25T02:45:24.214831+00:00"
   }
 ]
