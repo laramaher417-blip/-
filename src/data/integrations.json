@@ -166,5 +166,31 @@
     ],
     "monetization_angle": "Businesses can utilize Todoist's Task Sync feature to streamline task management for remote teams.",
     "created_at": "2026-11-25T02:45:24.214831+00:00"
+  },
+  {
+    "slug": "stripe-discord-payment-alerts",
+    "name": "Stripe to Discord Payment Alerts",
+    "category": "Payments",
+    "summary": "Automatically post real-time payment notifications from Stripe directly into a designated Discord channel, keeping your community or team instantly informed about sales activity.",
+    "setup_steps": [
+      "Create a Discord webhook in the target channel.",
+      "Set up a Stripe event webhook (e.g., payment_intent.succeeded) to trigger a serverless function.",
+      "Configure the function to send a formatted message to the Discord webhook URL."
+    ],
+    "monetization_angle": "Offer a tiered subscription model based on the number of notifications per month, with premium analytics for higher tiers.",
+    "created_at": "2026-11-26T02:44:15.313559+00:00"
+  },
+  {
+    "slug": "google-drive-discord-file-notifs",
+    "name": "Google Drive to Discord File Share Notifications",
+    "category": "File Sharing",
+    "summary": "Send instant Discord alerts whenever a new file is added or modified in a specified Google Drive folder, ensuring teams stay up-to-date without leaving Discord.",
+    "setup_steps": [
+      "Generate a Google Drive API service account and enable the Drive API.",
+      "Set up a Drive watch on the target folder to receive push notifications.",
+      "Create a Discord webhook and configure a function to forward Drive events to the webhook."
+    ],
+    "monetization_angle": "Charge per monitored folder with a free tier for single folder usage and premium plans for multiple folders and advanced filtering.",
+    "created_at": "2026-11-26T02:44:15.313583+00:00"
   }
 ]
