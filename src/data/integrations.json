@@ -192,5 +192,31 @@
     ],
     "monetization_angle": "Charge per monitored folder with a free tier for single folder usage and premium plans for multiple folders and advanced filtering.",
     "created_at": "2026-11-26T02:44:15.313583+00:00"
+  },
+  {
+    "slug": "sentry-to-jira-auto-triage",
+    "name": "Sentry to Jira Auto-Triage",
+    "category": "DevOps / Project Management",
+    "summary": "Connects Sentry error alerts to Jira by automatically creating and prioritizing tickets based on error severity and frequency. It reduces manual triage time for engineering teams by mapping stack traces to specific project boards.",
+    "setup_steps": [
+      "Connect Sentry API keys and Jira project ID",
+      "Define mapping rules for error types to Jira issue types",
+      "Enable webhook listener for real-time ticket creation"
+    ],
+    "monetization_angle": "Charge a monthly subscription based on the number of active error sources or team seats.",
+    "created_at": "2026-11-27T02:44:16.856106+00:00"
+  },
+  {
+    "slug": "gorgias-to-zoho-desk-sync",
+    "name": "Gorgias to Zoho Desk Sync",
+    "category": "Customer Support",
+    "summary": "Synchronizes customer support tickets from Gorgias to Zoho Desk to ensure sales and support teams have unified customer context. It automatically updates ticket status and customer metadata across both platforms in real-time.",
+    "setup_steps": [
+      "Authorize Gorgias and Zoho Desk OAuth connections",
+      "Map Gorgias tags and customer fields to Zoho attributes",
+      "Activate bidirectional sync for ticket status and comments"
+    ],
+    "monetization_angle": "Offer tiered pricing based on monthly ticket volume processed.",
+    "created_at": "2026-11-27T02:44:16.856138+00:00"
   }
 ]
