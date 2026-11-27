@@ -1,0 +1,42 @@
+---
+import { resolveToolLink } from '../data/affiliateTools';
+
+interface Props {
+  /** مفتاح الأداة كما هو في AFFILIATE_TOOLS مثل: "notion" أو "zapier" */
+  tool: string;
+  /** نص مخصص للرابط؛ إن لم يُمرّر يُستخدم اسم الأداة */
+  label?: string;
+  /** أصناف CSS إضافية */
+  class?: string;
+  /** فتح في تبويب جديد */
+  newTab?: boolean;
+}
+
+const {
+  tool,
+  label,
+  class: className = '',
+  newTab = true,
+} = Astro.props;
+
+const { href, isSponsoredLink, toolName } = resolveToolLink(tool);
+const text = label ?? toolName;
+
+const relParts: string[] = [];
+if (isSponsoredLink) {
+  relParts.push('nofollow', 'sponsored');
+}
+if (newTab) {
+  relParts.push('noopener', 'noreferrer');
+}
+const relValue = relParts.length > 0 ? relParts.join(' ') : undefined;
+---
+
+<a
+  href={href}
+  class={className}
+  rel={relValue}
+  target={newTab ? '_blank' : undefined}
+>
+  <slot>{text}</slot>
+</a>
