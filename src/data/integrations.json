@@ -218,5 +218,31 @@
     ],
     "monetization_angle": "Offer tiered pricing based on monthly ticket volume processed.",
     "created_at": "2026-11-27T02:44:16.856138+00:00"
+  },
+  {
+    "slug": "asana-to-google-sheets-report",
+    "name": "Asana to Google Sheets Reporting",
+    "category": "Productivity",
+    "summary": "Automatically export completed Asana tasks into a Google Sheet for real-time reporting and analysis.",
+    "setup_steps": [
+      "Connect your Asana workspace and select the project to monitor.",
+      "Link your Google account and choose the destination spreadsheet.",
+      "Map task fields to columns and enable scheduled sync."
+    ],
+    "monetization_angle": "Charge a monthly subscription based on the number of synced tasks per month.",
+    "created_at": "2026-11-28T02:40:50.440283+00:00"
+  },
+  {
+    "slug": "slack-to-gitlab-issue-creator",
+    "name": "Slack to GitLab Issue Creator",
+    "category": "Developer Tools",
+    "summary": "Turn Slack messages into GitLab issues with a single reaction or slash command, keeping development work in sync with team discussions.",
+    "setup_steps": [
+      "Install the Slack bot and authorize your workspace.",
+      "Link your GitLab account and select the target repository.",
+      "Configure trigger keywords or reactions and activate the integration."
+    ],
+    "monetization_angle": "Offer tiered pricing based on the number of active channels and issue creation volume.",
+    "created_at": "2026-11-28T02:40:50.440314+00:00"
   }
 ]
